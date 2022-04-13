@@ -1,6 +1,6 @@
 const APIPrefix = {
-  Default: '/api/pqjob/supplier/server',
-  Auth: '/api/pqjob/auth',
+  Default: '/antd-pro/api/pqjob/supplier/server',
+  Auth: '/antd-pro/api/pqjob/auth',
 };
 
 export default APIPrefix;
