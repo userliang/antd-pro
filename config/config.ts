@@ -9,7 +9,7 @@ import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  base: '/antd-pro/',
+  publicPath: '/antd-pro/',
   hash: true,
   antd: {},
   dva: {
