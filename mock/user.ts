@@ -29,7 +29,10 @@ const getAccess = () => {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'POST /api/pqjob/auth/TenantAdminFacade/queryCurLoginUser': (req: Request, res: Response) => {
+  'POST /antd-pro/api/pqjob/auth/TenantAdminFacade/queryCurLoginUser': (
+    req: Request,
+    res: Response,
+  ) => {
     if (!getAccess()) {
       res.status(401).send({
         data: {
@@ -79,7 +82,7 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
-  'POST /api/pqjob/auth/TenantAdminFacade/login': async (req: Request, res: Response) => {
+  'POST /antd-pro/api/pqjob/auth/TenantAdminFacade/login': async (req: Request, res: Response) => {
     const { type } = req.body;
     await waitTime(2000);
     res.send({
