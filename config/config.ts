@@ -11,6 +11,7 @@ const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   publicPath: '/antd-pro/',
   hash: true,
+  history: { type: 'hash' },
   antd: {},
   dva: {
     hmr: true,
