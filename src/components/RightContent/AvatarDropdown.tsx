@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, Fragment } from 'react';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import { outLogin } from '@/services/ant-design-pro/api';
 import type { MenuInfo } from 'rc-menu/lib/interface';
+import ChangePassword from './ChangePassword';
+import { logout } from '@/services/login';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -16,7 +17,7 @@ export type GlobalHeaderRightProps = {
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  await outLogin();
+  await logout();
   const { query = {}, search, pathname } = history.location;
   const { redirect } = query;
   // Note: There may be security issues, please note
@@ -24,7 +25,7 @@ const loginOut = async () => {
     history.replace({
       pathname: '/user/login',
       search: stringify({
-        redirect: pathname + search,
+        redirect: pathname + '?' + search,
       }),
     });
   }
@@ -32,6 +33,7 @@ const loginOut = async () => {
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [changePwdVisible, setChangePwdVisible] = useState(false);
 
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
@@ -39,6 +41,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       if (key === 'logout') {
         setInitialState((s) => ({ ...s, currentUser: undefined }));
         loginOut();
+        return;
+      }
+      if (key === 'changePassword') {
+        setChangePwdVisible(true);
         return;
       }
       history.push(`/account/${key}`);
@@ -64,7 +70,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.userName) {
     return loading;
   }
 
@@ -83,7 +89,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         </Menu.Item>
       )}
       {menu && <Menu.Divider />}
-
+      <Menu.Item key="changePassword">
+        <UserOutlined />
+        修改密码
+      </Menu.Item>
       <Menu.Item key="logout">
         <LogoutOutlined />
         退出登录
@@ -91,12 +100,25 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     </Menu>
   );
   return (
-    <HeaderDropdown overlay={menuHeaderDropdown}>
-      <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
-      </span>
-    </HeaderDropdown>
+    <Fragment>
+      <HeaderDropdown overlay={menuHeaderDropdown}>
+        <span className={`${styles.action} ${styles.account}`}>
+          <Avatar
+            size="small"
+            className={styles.avatar}
+            src={currentUser.headImgUrl}
+            alt="avatar"
+          />
+          <span className={`${styles.userName} anticon`}>{currentUser.userName}</span>
+        </span>
+      </HeaderDropdown>
+      {changePwdVisible ? (
+        <ChangePassword
+          changePwdVisible={changePwdVisible}
+          handleCancelChangePwd={() => setChangePwdVisible(false)}
+        />
+      ) : null}
+    </Fragment>
   );
 };
 

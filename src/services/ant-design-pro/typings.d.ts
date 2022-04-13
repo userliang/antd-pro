@@ -3,24 +3,15 @@
 
 declare namespace API {
   type CurrentUser = {
-    name?: string;
-    avatar?: string;
-    userid?: string;
-    email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+    id: string | number;
+    channelProvider: string;
+    headImgUrl?: string;
+    headPortrait?: string;
+    permCodes: string[];
+    tenant: string;
+    userCode: string;
+    userName: string;
+    userRole: 'TENANT_SUPER_ADMIN' | 'TENANT_LV2_ADMIN';
   };
 
   type LoginResult = {
@@ -62,7 +53,7 @@ declare namespace API {
   };
 
   type LoginParams = {
-    username?: string;
+    userCode?: string;
     password?: string;
     autoLogin?: boolean;
     type?: string;
