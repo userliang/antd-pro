@@ -7,7 +7,7 @@ const namespace = 'TenantAdminFacade';
  */
 export async function accountLogin(params: any) {
   return request(`/${namespace}/login`, {
-    prefix: '/api/pqjob/auth',
+    prefix: '/antd-pro/api/pqjob/auth',
     method: 'POST',
     data: params,
   });
@@ -20,12 +20,12 @@ export async function accountLogin(params: any) {
 export async function logout() {
   return request(`/${namespace}/logout`, {
     method: 'POST',
-    prefix: '/api/pqjob/auth',
+    prefix: '/antd-pro/api/pqjob/auth',
     data: [],
   });
 }
 
 // 获取当前登陆用户
 export async function queryCurLoginUser() {
-  return request(`/${namespace}/queryCurLoginUser`, { prefix: '/api/pqjob/auth' });
+  return request(`/${namespace}/queryCurLoginUser`, { prefix: '/antd-pro/api/pqjob/auth' });
 }
